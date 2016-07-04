@@ -15,18 +15,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import io.realm.Realm;
 
-public class FetchData extends AsyncTask<String, Void, Boolean> {
-    Realm realm;
+public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
+
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected List<EmojiModel> doInBackground(String... params) {
         Boolean success = false;
+        ArrayList<EmojiModel> emojiModels = new ArrayList<>();
+
         StringBuilder data = new StringBuilder("");
         try {
             Log.d("DEBUG", "inside try");
-            URL url = new URL("");
+            URL url = new URL("https://raw.githubusercontent.com/SubhrajyotiSen/EmojiAPI/master/emojis.json");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.connect();
@@ -41,7 +43,30 @@ public class FetchData extends AsyncTask<String, Void, Boolean> {
             }
 
             inputStream.close();
-            parseResult(data.toString());
+            //parseResult(data.toString());
+            try {
+                JSONArray response = new JSONArray(data.toString());
+                for (int i = 0 ; i < response.length() ; i++) {
+                    JSONObject jsonObject = response.getJSONObject(i);
+                    EmojiModel emojiModel = new EmojiModel();
+                    emojiModel.setName(jsonObject.getString("name"));
+                    Log.d("HAHA",jsonObject.getString("name"));
+                    emojiModel.setCategory(jsonObject.getString("category"));
+                    emojiModel.setCharacter(jsonObject.getString("character"));
+                    JSONArray keywords = jsonObject.getJSONArray("keywords");
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    for (int j = 0; j < keywords.length() ; j++ ) {
+                        arrayList.add(keywords.getString(j));
+                        Log.d("HAHAHAHAH", keywords.getString(j));
+                    }
+                    emojiModel.setKeywords(arrayList);
+                    emojiModels.add(emojiModel);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
             Log.d("DEBUG", "input stream not null");
             success = true;
 
@@ -49,30 +74,37 @@ public class FetchData extends AsyncTask<String, Void, Boolean> {
             e.printStackTrace();
         }
 
-        return success;
+       // return success;
+        return emojiModels;
     }
 
-    void parseResult(String data) {
-        try {
-            JSONArray response = new JSONArray(data);
-            for (int i = 0 ; i < response.length() ; i++) {
-                JSONObject jsonObject = response.getJSONObject(i);
-                EmojiModel emojiModel = new EmojiModel();
-                emojiModel.setName(jsonObject.getString("name"));
-                emojiModel.setCategory(jsonObject.getString("category"));
-                emojiModel.setCharacter(jsonObject.getString("char"));
-                JSONArray keywords = jsonObject.getJSONArray("keywords");
-                ArrayList<String> arrayList = new ArrayList<>();
-                for (int j = 0; j < keywords.length() ; j++ )
-                    arrayList.add(keywords.getString(i));
-                emojiModel.setKeywords(arrayList);
-                realm.beginTransaction();
-                realm.copyToRealm(emojiModel);
-                realm.commitTransaction();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    @Override
+    protected void onPostExecute(List<EmojiModel> emojiModelList){
+        super.onPostExecute(emojiModelList);
     }
+
+//    void parseResult(String data) {
+//        try {
+//            JSONArray response = new JSONArray(data);
+//            for (int i = 0 ; i < response.length() ; i++) {
+//                JSONObject jsonObject = response.getJSONObject(i);
+//                EmojiModel emojiModel = new EmojiModel();
+//                emojiModel.setName(jsonObject.getString("name"));
+//                Log.d("HAHA",jsonObject.getString("name"));
+//                emojiModel.setCategory(jsonObject.getString("category"));
+//                emojiModel.setCharacter(jsonObject.getString("character"));
+//                JSONArray keywords = jsonObject.getJSONArray("keywords");
+//                ArrayList<String> arrayList = new ArrayList<>();
+//                for (int j = 0; j < keywords.length() ; j++ ) {
+//                    arrayList.add(keywords.getString(j));
+//                    Log.d("HAHAHAHAH", keywords.getString(j));
+//                }
+//                emojiModel.setKeywords(arrayList);
+//
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

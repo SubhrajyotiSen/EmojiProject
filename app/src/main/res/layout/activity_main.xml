@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2196f3"
-    tools:context=".MainActivity"
+    tools:context=".Views.EmojiActivity"
     android:orientation="vertical">
 
 
@@ -34,16 +34,18 @@
         >
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/button1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/magic"
+            android:onClick="onMagicClick"
             android:layout_weight="1"/>
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/clipboard"
+            android:onClick="onShareClick"
             android:layout_weight="1"/>
     </LinearLayout>
 

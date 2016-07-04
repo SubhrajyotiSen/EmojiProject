@@ -1,14 +1,12 @@
 package com.anonymous.emojiproject.Models;
 
-
 import java.util.ArrayList;
+import java.util.List;
 
-import io.realm.RealmObject;
-
-public class EmojiModel extends RealmObject{
+public class EmojiModel {
 
     private String name;
-    private ArrayList<String> keywords;
+    private List<String> keywords;
     private String character;
     private String category;
 
@@ -20,7 +18,7 @@ public class EmojiModel extends RealmObject{
         this.name = name;
     }
 
-    public ArrayList<String> getKeywords() {
+    public List<String> getKeywords() {
         return keywords;
     }
 
@@ -44,7 +42,4 @@ public class EmojiModel extends RealmObject{
         this.category = category;
     }
 
-    public EmojiModel(){
-        keywords = new ArrayList<>();
-    }
 }

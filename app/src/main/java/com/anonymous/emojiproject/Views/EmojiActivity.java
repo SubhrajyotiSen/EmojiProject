@@ -1,4 +1,4 @@
-package com.anonymous.emojiproject;
+package com.anonymous.emojiproject.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,16 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.anonymous.emojiproject.Utils.FetchData;
+import com.anonymous.emojiproject.Presenters.EmojiPresenter;
+import com.anonymous.emojiproject.R;
 
-public class MainActivity extends AppCompatActivity {
+
+public class EmojiActivity extends AppCompatActivity {
 
     EditText editText;
     EditText textView;
-    Button button;
-    Button button2;
+    EmojiPresenter emojiPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +27,23 @@ public class MainActivity extends AppCompatActivity {
 
         editText = (EditText) findViewById(R.id.editText);
         textView = (EditText) findViewById(R.id.textView);
-        button = (Button) findViewById(R.id.button);
-        button2 = (Button) findViewById(R.id.button2);
-        new FetchData().execute();
-
-
-
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                share();
-            }
-        });
-
-
+        emojiPresenter = new EmojiPresenter(this);
+        emojiPresenter.loadEmoji();
     }
+
+    public void onShareClick(View v){
+        Toast.makeText(EmojiActivity.this, "ahahahahahah", Toast.LENGTH_SHORT).show();
+        Intent sharing = new Intent(Intent.ACTION_SEND);
+        sharing.setType("text/plain");
+        sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
+        startActivity(Intent.createChooser(sharing, "Share via"));
+    }
+
+    public void onMagicClick(View v){
+        if (!editText.getText().toString().equals(null))
+            emojiPresenter.parseEmojiSentence(editText.getText().toString());
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,28 +62,13 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            new MaterialDialog.Builder(this)
-                    .title("Emojify")
-                    .content("Developed by Subhrajyoti Sen\nPowered by emojilib")
-                    .positiveText("OK")
-                    .show();
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void share(){
-
-        Intent sharing = new Intent(Intent.ACTION_SEND);
-        sharing.setType("text/plain");
-        sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
-        startActivity(Intent.createChooser(sharing, "Share via"));
-
+    public void displayEmoji(String string){
+        textView.setText(string);
     }
-
-
-
 
 }
