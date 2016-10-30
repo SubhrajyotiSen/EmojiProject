@@ -1,6 +1,7 @@
 package com.anonymous.emojiproject.Presenters;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
 import com.anonymous.emojiproject.Utils.FetchData;
@@ -12,8 +13,8 @@ import java.util.concurrent.ExecutionException;
 
 public class EmojiPresenter {
 
-    EmojiActivity emojiActivity;
-    List<EmojiModel> emojiModelList;
+    private EmojiActivity emojiActivity;
+    private List<EmojiModel> emojiModelList;
 
     public EmojiPresenter(EmojiActivity emojiActivity){
         this.emojiActivity = emojiActivity;
@@ -24,9 +25,7 @@ public class EmojiPresenter {
 
         try {
             emojiModelList = new FetchData().execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
@@ -39,7 +38,7 @@ public class EmojiPresenter {
 
     }
 
-    public String parseEmoji(String string){
+    private String parseEmoji(String string){
         String character = string;
         for (EmojiModel emojiModel : emojiModelList ){
             for (String s : emojiModel.getKeywords())
@@ -51,6 +50,5 @@ public class EmojiPresenter {
                 character = emojiModel.getCharacter();
         }
         return character;
-        //emojiActivity.displayEmoji(character);
     }
 }

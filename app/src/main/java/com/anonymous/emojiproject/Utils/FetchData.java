@@ -27,7 +27,6 @@ public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
 
         StringBuilder data = new StringBuilder("");
         try {
-            Log.d("DEBUG", "inside try");
             URL url = new URL("https://raw.githubusercontent.com/SubhrajyotiSen/EmojiAPI/master/emojis.json");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -39,7 +38,6 @@ public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 data.append(line);
-                Log.d("DEBUG", line);
             }
 
             inputStream.close();
@@ -50,14 +48,12 @@ public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
                     JSONObject jsonObject = response.getJSONObject(i);
                     EmojiModel emojiModel = new EmojiModel();
                     emojiModel.setName(jsonObject.getString("name"));
-                    Log.d("HAHA",jsonObject.getString("name"));
                     emojiModel.setCategory(jsonObject.getString("category"));
-                    emojiModel.setCharacter(jsonObject.getString("character"));
+                    emojiModel.setCharacter(jsonObject.getString("char"));
                     JSONArray keywords = jsonObject.getJSONArray("keywords");
                     ArrayList<String> arrayList = new ArrayList<>();
                     for (int j = 0; j < keywords.length() ; j++ ) {
                         arrayList.add(keywords.getString(j));
-                        Log.d("HAHAHAHAH", keywords.getString(j));
                     }
                     emojiModel.setKeywords(arrayList);
                     emojiModels.add(emojiModel);
@@ -67,7 +63,6 @@ public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
                 e.printStackTrace();
             }
 
-            Log.d("DEBUG", "input stream not null");
             success = true;
 
         } catch (Exception e) {
@@ -83,28 +78,4 @@ public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
         super.onPostExecute(emojiModelList);
     }
 
-//    void parseResult(String data) {
-//        try {
-//            JSONArray response = new JSONArray(data);
-//            for (int i = 0 ; i < response.length() ; i++) {
-//                JSONObject jsonObject = response.getJSONObject(i);
-//                EmojiModel emojiModel = new EmojiModel();
-//                emojiModel.setName(jsonObject.getString("name"));
-//                Log.d("HAHA",jsonObject.getString("name"));
-//                emojiModel.setCategory(jsonObject.getString("category"));
-//                emojiModel.setCharacter(jsonObject.getString("character"));
-//                JSONArray keywords = jsonObject.getJSONArray("keywords");
-//                ArrayList<String> arrayList = new ArrayList<>();
-//                for (int j = 0; j < keywords.length() ; j++ ) {
-//                    arrayList.add(keywords.getString(j));
-//                    Log.d("HAHAHAHAH", keywords.getString(j));
-//                }
-//                emojiModel.setKeywords(arrayList);
-//
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

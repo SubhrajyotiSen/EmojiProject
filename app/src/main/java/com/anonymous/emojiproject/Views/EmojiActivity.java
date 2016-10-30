@@ -32,7 +32,6 @@ public class EmojiActivity extends AppCompatActivity {
     }
 
     public void onShareClick(View v){
-        Toast.makeText(EmojiActivity.this, "ahahahahahah", Toast.LENGTH_SHORT).show();
         Intent sharing = new Intent(Intent.ACTION_SEND);
         sharing.setType("text/plain");
         sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
@@ -40,7 +39,7 @@ public class EmojiActivity extends AppCompatActivity {
     }
 
     public void onMagicClick(View v){
-        if (!editText.getText().toString().equals(null))
+        if (!editText.getText().toString().equals(""))
             emojiPresenter.parseEmojiSentence(editText.getText().toString());
     }
 
