@@ -7,7 +7,7 @@
     <string name="plain_text">Plain Text</string>
     <string name="emoji_text">Emoji Text</string>
     <string name="to_emoji">To ✨emoji✨</string>
-    <string name="typing">Just start typing...</string>
+    <string name="typing">Start typing...</string>
     <string name="clipboard">Share</string>
     <string name="magic">Magic</string>
 </resources>

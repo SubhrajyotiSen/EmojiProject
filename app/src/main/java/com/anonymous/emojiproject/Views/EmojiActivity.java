@@ -2,13 +2,12 @@ package com.anonymous.emojiproject.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
 import com.anonymous.emojiproject.R;
@@ -29,6 +28,17 @@ public class EmojiActivity extends AppCompatActivity {
         textView = (EditText) findViewById(R.id.textView);
         emojiPresenter = new EmojiPresenter(this);
         emojiPresenter.loadEmoji();
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sharing = new Intent(Intent.ACTION_SEND);
+                sharing.setType("text/plain");
+                sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
+                startActivity(Intent.createChooser(sharing, "Share via"));
+            }
+        });
     }
 
     public void onShareClick(View v){
