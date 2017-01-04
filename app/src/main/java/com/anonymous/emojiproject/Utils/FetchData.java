@@ -27,7 +27,7 @@ public class FetchData extends AsyncTask<String, Void, List<EmojiModel>> {
 
         StringBuilder data = new StringBuilder("");
         try {
-            URL url = new URL("https://raw.githubusercontent.com/SubhrajyotiSen/EmojiAPI/master/emojis.json");
+            URL url = new URL("https://raw.githubusercontent.com/SubhrajyotiSen/EmojiAPI/master/emoji.json");
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
             httpURLConnection.connect();
