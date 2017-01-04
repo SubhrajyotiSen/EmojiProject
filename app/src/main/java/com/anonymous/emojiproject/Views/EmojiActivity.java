@@ -41,13 +41,6 @@ public class EmojiActivity extends AppCompatActivity {
         });
     }
 
-    public void onShareClick(View v){
-        Intent sharing = new Intent(Intent.ACTION_SEND);
-        sharing.setType("text/plain");
-        sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
-        startActivity(Intent.createChooser(sharing, "Share via"));
-    }
-
     public void onMagicClick(View v){
         if (!editText.getText().toString().equals(""))
             emojiPresenter.parseEmojiSentence(editText.getText().toString());
