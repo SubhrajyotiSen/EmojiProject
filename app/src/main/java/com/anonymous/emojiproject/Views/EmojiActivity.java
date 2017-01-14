@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,15 +41,24 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
                 startActivity(Intent.createChooser(sharing, "Share via"));
             }
         });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                    emojiPresenter.parseEmojiSentence(editable.toString());
+            }
+        });
     }
-
-    public void onMagicClick(View v){
-        if (!editText.getText().toString().equals(""))
-            emojiPresenter.parseEmojiSentence(editText.getText().toString());
-        emojiPresenter.hideKeyboard(this.getCurrentFocus(), this);
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
