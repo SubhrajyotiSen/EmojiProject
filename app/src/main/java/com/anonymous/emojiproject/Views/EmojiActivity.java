@@ -28,7 +28,7 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
         textView = (EditText) findViewById(R.id.textView);
         emojiPresenter = new EmojiPresenter(this);
 
-        emojiPresenter.checkInternet(this);
+        emojiPresenter.checkFirstOpen(this);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -79,6 +79,11 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
     @Override
     public void displayEmoji(String string){
         textView.setText(string);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 
 }

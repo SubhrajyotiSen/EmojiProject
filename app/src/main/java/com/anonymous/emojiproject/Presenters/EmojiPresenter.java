@@ -1,12 +1,13 @@
 package com.anonymous.emojiproject.Presenters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
+import com.anonymous.emojiproject.R;
 import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
 import com.anonymous.emojiproject.Views.EmojiView;
@@ -65,17 +66,24 @@ public class EmojiPresenter {
         return character;
     }
 
-    public void hideKeyboard(View view, Context context){
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+    public void checkFirstOpen(Context context){
+        if (ExtraUtils.isFirstOpen(context) && !ExtraUtils.isConnected(context)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.network_unavailable_title);
+            builder.setMessage(R.string.network_unavailabl_content);
 
-    public void checkInternet(Context context){
-        if (ExtraUtils.isConnected(context))
-            loadEmoji(context);
+            String positiveText = context.getString(android.R.string.ok);
+            builder.setPositiveButton(positiveText,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            emojiView.finishActivity();
+                        }
+                    });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
         else
-            ExtraUtils.showInternetDialog(context);
+            loadEmoji(context);
     }
 }
