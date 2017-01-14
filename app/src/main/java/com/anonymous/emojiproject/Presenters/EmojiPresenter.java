@@ -1,7 +1,6 @@
 package com.anonymous.emojiproject.Presenters;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
 import com.anonymous.emojiproject.Utils.FetchData;
@@ -38,7 +37,7 @@ public class EmojiPresenter {
 
     }
 
-    private String parseEmoji(String string){
+    public String parseEmoji(String string){
         String character = string;
         for (EmojiModel emojiModel : emojiModelList ){
             for (String s : emojiModel.getKeywords())
