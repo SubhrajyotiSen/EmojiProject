@@ -2,13 +2,11 @@ package com.anonymous.emojiproject.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
@@ -30,17 +28,6 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
         textView = (EditText) findViewById(R.id.textView);
         emojiPresenter = new EmojiPresenter(this);
         emojiPresenter.loadEmoji(this);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent sharing = new Intent(Intent.ACTION_SEND);
-                sharing.setType("text/plain");
-                sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
-                startActivity(Intent.createChooser(sharing, "Share via"));
-            }
-        });
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -74,9 +61,15 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
+        switch (id){
+            case R.id.action_share:
+                Intent sharing = new Intent(Intent.ACTION_SEND);
+                sharing.setType("text/plain");
+                sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
+                startActivity(Intent.createChooser(sharing, getString(R.string.share_text)));
+                break;
+            case R.id.action_about:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
