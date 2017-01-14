@@ -9,7 +9,7 @@ A simple Android app that translates all your English text to beautiful emoji. B
 You can get the latest apk in the [releases](https://github.com/SubhrajyotiSen/EmojiProject/releases) tab
 
 ##Special thanks
-[Muan](https://github.com/muan) for the awesome emojilib
+[Muan](https://github.com/muan) for the awesome emojilib      
 [Monica Dinculescu](https://github.com/notwaldorf) for getting me addicted to emoji (and also her emoji-translate) 😆
 
 
