@@ -27,7 +27,8 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
         editText = (EditText) findViewById(R.id.editText);
         textView = (EditText) findViewById(R.id.textView);
         emojiPresenter = new EmojiPresenter(this);
-        emojiPresenter.loadEmoji(this);
+
+        emojiPresenter.checkInternet(this);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override

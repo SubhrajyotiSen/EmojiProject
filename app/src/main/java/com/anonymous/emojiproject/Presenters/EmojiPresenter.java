@@ -1,15 +1,12 @@
 package com.anonymous.emojiproject.Presenters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
-import com.anonymous.emojiproject.R;
 import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
 import com.anonymous.emojiproject.Views.EmojiView;
@@ -40,27 +37,9 @@ public class EmojiPresenter {
             }
         }
         else {
-            if (ExtraUtils.isFirstOpen(context)){
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(R.string.network_unavailable_title);
-                builder.setMessage(R.string.network_unavailabl_content);
-
-                String positiveText = context.getString(android.R.string.ok);
-                builder.setPositiveButton(positiveText,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-            else {
-                String json = PreferenceManager.
-                        getDefaultSharedPreferences(context).getString("theJson", "");
-                emojiModelList = ExtraUtils.parseJSON(json);
-            }
-
+            String json = PreferenceManager.
+                    getDefaultSharedPreferences(context).getString("theJson", "");
+            emojiModelList = ExtraUtils.parseJSON(json);
         }
     }
 
@@ -91,5 +70,12 @@ public class EmojiPresenter {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void checkInternet(Context context){
+        if (ExtraUtils.isConnected(context))
+            loadEmoji(context);
+        else
+            ExtraUtils.showInternetDialog(context);
     }
 }

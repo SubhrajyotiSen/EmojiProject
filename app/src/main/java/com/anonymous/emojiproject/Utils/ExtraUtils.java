@@ -1,10 +1,12 @@
 package com.anonymous.emojiproject.Utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
@@ -60,5 +62,21 @@ public class ExtraUtils {
             e.printStackTrace();
         }
         return emojiModels;
+    }
+
+    public static void showInternetDialog(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.network_unavailable_title);
+        builder.setMessage(R.string.network_unavailabl_content);
+
+        String positiveText = context.getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

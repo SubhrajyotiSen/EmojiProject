@@ -32,12 +32,14 @@ public class ApplicationTest  {
 
     @Test
     public void translateWord(){
-        if (ExtraUtils.isConnected(InstrumentationRegistry.getContext())) {
-            EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
-            emojiPresenter.loadEmoji(InstrumentationRegistry.getContext());
-            assertNotEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF69");
+        EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
+        emojiPresenter.loadEmoji(InstrumentationRegistry.getContext());
+        if (ExtraUtils.isConnected(InstrumentationRegistry.getContext()))
             assertEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF55");
-        }
+        else
+            assertEquals(emojiPresenter.parseEmoji("pizza"), "pizza");
+        assertNotEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF69");
+
 
     }
 }
