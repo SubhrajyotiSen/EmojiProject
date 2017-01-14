@@ -1,4 +1,4 @@
-package com.anonymous.emojiproject.Views;
+package com.anonymous.emojiproject;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
-import com.anonymous.emojiproject.R;
+import com.anonymous.emojiproject.Views.EmojiView;
+
+import java.util.concurrent.ExecutionException;
 
 
 public class EmojiActivity extends AppCompatActivity implements EmojiView {
@@ -43,7 +45,11 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
 
             @Override
             public void afterTextChanged(Editable editable) {
+                try {
                     emojiPresenter.parseEmojiSentence(editable.toString());
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

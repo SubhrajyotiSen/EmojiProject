@@ -6,7 +6,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
 import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
-import com.anonymous.emojiproject.Views.EmojiActivity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
