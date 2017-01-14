@@ -53,15 +53,37 @@ public class EmojiPresenter {
     }
 
     public String parseEmoji(String string){
+        string = string.replaceAll("[^a-zA-Z0-9\\s]", "");
         String character = string;
+        String plural = string.length()==1 ? string : string.concat("s");
+        String verb = string.endsWith("ing") ? string.substring(0, string.length()-3) : string;
+        String singular = string;
+        if (string.length() > 2 && string.charAt(string.length()-1) == 's')
+            singular = string.substring(0, string.length()-1);
+
+
         for (EmojiModel emojiModel : emojiModelList ){
             for (String s : emojiModel.getKeywords())
             {
-                if (s.equalsIgnoreCase(string))
+                if (s.equalsIgnoreCase(string)
+                        || s.equalsIgnoreCase(plural)
+                        || s.equalsIgnoreCase(singular)
+                        || s.equalsIgnoreCase(verb)
+                        || s.equalsIgnoreCase(string.concat("_ing"))){
                     character = emojiModel.getCharacter();
+                    return character;
+                }
+
             }
-            if (emojiModel.getName().equalsIgnoreCase(character))
+            String name = emojiModel.getName();
+            if (name.equalsIgnoreCase(string)
+                    || name.equalsIgnoreCase(plural)
+                    || name.equalsIgnoreCase(singular)
+                    || name.equalsIgnoreCase(verb)
+                    || name.equalsIgnoreCase(string.concat("_ing"))) {
                 character = emojiModel.getCharacter();
+                return character;
+            }
         }
         return character;
     }
