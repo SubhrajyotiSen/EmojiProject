@@ -3,6 +3,8 @@ package com.anonymous.emojiproject.Presenters;
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
 import com.anonymous.emojiproject.Utils.ExtraUtils;
@@ -62,5 +64,12 @@ public class EmojiPresenter {
                 character = emojiModel.getCharacter();
         }
         return character;
+    }
+
+    public void hideKeyboard(View view, Context context){
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

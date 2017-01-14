@@ -44,6 +44,8 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
     public void onMagicClick(View v){
         if (!editText.getText().toString().equals(""))
             emojiPresenter.parseEmojiSentence(editText.getText().toString());
+        emojiPresenter.hideKeyboard(this.getCurrentFocus(), this);
+
     }
 
 
