@@ -4,6 +4,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
+import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
 import com.anonymous.emojiproject.Views.EmojiActivity;
 
@@ -31,10 +32,12 @@ public class ApplicationTest  {
 
     @Test
     public void translateWord(){
-        EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
-        emojiPresenter.loadEmoji(InstrumentationRegistry.getContext());
-        assertNotEquals(emojiPresenter.parseEmoji("pizza"),"\uD83C\uDF69");
-        assertEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF55");
+        if (ExtraUtils.isConnected(InstrumentationRegistry.getContext())) {
+            EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
+            emojiPresenter.loadEmoji(InstrumentationRegistry.getContext());
+            assertNotEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF69");
+            assertEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF55");
+        }
 
     }
 }
