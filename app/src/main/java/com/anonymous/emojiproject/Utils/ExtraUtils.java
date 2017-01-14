@@ -1,10 +1,14 @@
 package com.anonymous.emojiproject.Utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
+import com.anonymous.emojiproject.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +24,15 @@ public class ExtraUtils {
         if (activeNetwork != null) {
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE)
                 return true;
+        }
+        return false;
+    }
+
+    public static boolean isFirstOpen(Context context){
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        if (settings.getBoolean(context.getString(R.string.first_sp), true)) {
+            settings.edit().putBoolean(context.getString(R.string.first_sp), false).apply();
+            return true;
         }
         return false;
     }

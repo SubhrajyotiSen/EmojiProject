@@ -1,12 +1,15 @@
 package com.anonymous.emojiproject.Presenters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
+import com.anonymous.emojiproject.R;
 import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
 import com.anonymous.emojiproject.Views.EmojiView;
@@ -25,7 +28,7 @@ public class EmojiPresenter {
 
     }
 
-    public void loadEmoji(Context context){
+    public void loadEmoji(final Context context){
         if (ExtraUtils.isConnected(context)) {
             try {
                 String json = new FetchData().execute().get();
@@ -37,9 +40,26 @@ public class EmojiPresenter {
             }
         }
         else {
-            String json = PreferenceManager.
-                    getDefaultSharedPreferences(context).getString("theJson","");
-            emojiModelList = ExtraUtils.parseJSON(json);
+            if (ExtraUtils.isFirstOpen(context)){
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.network_unavailable_title);
+                builder.setMessage(R.string.network_unavailabl_content);
+
+                String positiveText = context.getString(android.R.string.ok);
+                builder.setPositiveButton(positiveText,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            else {
+                String json = PreferenceManager.
+                        getDefaultSharedPreferences(context).getString("theJson", "");
+                emojiModelList = ExtraUtils.parseJSON(json);
+            }
 
         }
     }

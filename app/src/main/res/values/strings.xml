@@ -12,4 +12,7 @@
     <string name="magic">Magic</string>
     <string name="share">Share</string>
     <string name="share_text">Share via</string>
+    <string name="first_sp">first_time</string>
+    <string name="network_unavailable_title">Network unavailable</string>
+    <string name="network_unavailabl_content">The app needs Internet to get started on initial launch.\nPlease try again when Internet is available</string>
 </resources>
