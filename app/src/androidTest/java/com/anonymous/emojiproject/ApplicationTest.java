@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 
@@ -32,5 +33,6 @@ public class ApplicationTest  {
         EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
         emojiPresenter.loadEmoji();
         assertEquals(emojiPresenter.parseEmoji("pizza"),"\uD83C\uDF55");
+        assertNotEquals(emojiPresenter.parseEmoji("pizza"),"\uD83C\uDF69");
     }
 }
