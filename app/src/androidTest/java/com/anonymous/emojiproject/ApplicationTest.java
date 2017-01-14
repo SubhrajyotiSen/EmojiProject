@@ -1,5 +1,6 @@
 package com.anonymous.emojiproject;
 
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
@@ -31,8 +32,9 @@ public class ApplicationTest  {
     @Test
     public void translateWord(){
         EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
-        emojiPresenter.loadEmoji();
-        assertEquals(emojiPresenter.parseEmoji("pizza"),"\uD83C\uDF55");
+        emojiPresenter.loadEmoji(InstrumentationRegistry.getContext());
         assertNotEquals(emojiPresenter.parseEmoji("pizza"),"\uD83C\uDF69");
+        assertEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF55");
+
     }
 }

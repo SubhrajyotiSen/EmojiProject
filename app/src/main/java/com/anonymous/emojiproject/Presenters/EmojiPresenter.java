@@ -1,10 +1,13 @@
 package com.anonymous.emojiproject.Presenters;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.anonymous.emojiproject.Models.EmojiModel;
+import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
-import com.anonymous.emojiproject.Views.EmojiActivity;
+import com.anonymous.emojiproject.Views.EmojiView;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -12,20 +15,30 @@ import java.util.concurrent.ExecutionException;
 
 public class EmojiPresenter {
 
-    private EmojiActivity emojiActivity;
+    private EmojiView emojiView;
     private List<EmojiModel> emojiModelList;
 
-    public EmojiPresenter(EmojiActivity emojiActivity){
-        this.emojiActivity = emojiActivity;
+    public EmojiPresenter(EmojiView emojiView){
+        this.emojiView = emojiView;
 
     }
 
-    public void loadEmoji(){
+    public void loadEmoji(Context context){
+        if (ExtraUtils.isConnected(context)) {
+            try {
+                String json = new FetchData().execute().get();
+                emojiModelList = ExtraUtils.parseJSON(json);
+                PreferenceManager.getDefaultSharedPreferences(context).edit()
+                        .putString("theJson",json).apply();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            String json = PreferenceManager.
+                    getDefaultSharedPreferences(context).getString("theJson","");
+            emojiModelList = ExtraUtils.parseJSON(json);
 
-        try {
-            emojiModelList = new FetchData().execute().get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
     }
 
@@ -33,7 +46,7 @@ public class EmojiPresenter {
         String[] arr = string.split(" ");
         for (int i = 0; i < arr.length; i++)
             arr[i] = parseEmoji(arr[i]);
-        emojiActivity.displayEmoji(TextUtils.join(" ",arr));
+        emojiView.displayEmoji(TextUtils.join(" ",arr));
 
     }
 

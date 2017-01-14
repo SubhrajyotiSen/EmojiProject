@@ -13,7 +13,7 @@ import com.anonymous.emojiproject.Presenters.EmojiPresenter;
 import com.anonymous.emojiproject.R;
 
 
-public class EmojiActivity extends AppCompatActivity {
+public class EmojiActivity extends AppCompatActivity implements EmojiView {
 
     EditText editText;
     EditText textView;
@@ -27,7 +27,7 @@ public class EmojiActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.editText);
         textView = (EditText) findViewById(R.id.textView);
         emojiPresenter = new EmojiPresenter(this);
-        emojiPresenter.loadEmoji();
+        emojiPresenter.loadEmoji(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +69,7 @@ public class EmojiActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void displayEmoji(String string){
         textView.setText(string);
     }
