@@ -3,9 +3,11 @@ package com.anonymous.emojiproject;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.anonymous.emojiproject.Models.AsyncContainer;
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
 import com.anonymous.emojiproject.Utils.ExtraUtils;
 import com.anonymous.emojiproject.Utils.FetchData;
+import com.anonymous.emojiproject.Utils.TranslateTask;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,14 +32,14 @@ public class ApplicationTest  {
     }
 
     @Test
-    public void translateWord(){
+    public void translateWord() throws ExecutionException, InterruptedException {
         EmojiPresenter emojiPresenter = new EmojiPresenter(activity);
         emojiPresenter.loadEmoji(InstrumentationRegistry.getContext());
         if (ExtraUtils.isConnected(InstrumentationRegistry.getContext()))
-            assertEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF55");
+            assertEquals((new TranslateTask().execute(new AsyncContainer("pizza",emojiPresenter.getEmojiList())).get()), "\uD83C\uDF55");
         else
-            assertEquals(emojiPresenter.parseEmoji("pizza"), "pizza");
-        assertNotEquals(emojiPresenter.parseEmoji("pizza"), "\uD83C\uDF69");
+            assertEquals((new TranslateTask().execute(new AsyncContainer("pizza",emojiPresenter.getEmojiList())).get()), "pizza");
+        assertNotEquals((new TranslateTask().execute(new AsyncContainer("pizza",emojiPresenter.getEmojiList())).get()), "\uD83C\uDF69");
 
 
     }

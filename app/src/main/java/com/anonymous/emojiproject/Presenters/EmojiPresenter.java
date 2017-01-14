@@ -71,4 +71,8 @@ public class EmojiPresenter {
         else
             loadEmoji(context);
     }
+
+    public ArrayList<EmojiModel> getEmojiList(){
+        return (ArrayList<EmojiModel>) emojiModelList;
+    }
 }
