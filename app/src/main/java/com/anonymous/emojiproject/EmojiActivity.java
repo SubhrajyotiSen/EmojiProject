@@ -1,12 +1,12 @@
 package com.anonymous.emojiproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 
 import com.anonymous.emojiproject.Presenters.EmojiPresenter;
@@ -17,74 +17,53 @@ import java.util.concurrent.ExecutionException;
 
 public class EmojiActivity extends AppCompatActivity implements EmojiView {
 
-    EditText editText;
-    EditText textView;
-    EmojiPresenter emojiPresenter;
+    private EditText editText;
+    private FloatingActionButton floatingActionButton;
+    private android.support.v7.widget.Toolbar toolbar;
+    private EmojiPresenter emojiPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editText = (EditText) findViewById(R.id.editText);
-        textView = (EditText) findViewById(R.id.textView);
+        editText = findViewById(R.id.editText);
+        floatingActionButton = findViewById(R.id.fab);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         emojiPresenter = new EmojiPresenter(this);
 
         emojiPresenter.checkFirstOpen(this);
 
-        editText.addTextChangedListener(new TextWatcher() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
+            public void onClick(View view) {
                 try {
-                    emojiPresenter.parseEmojiSentence(editable.toString());
-                } catch (ExecutionException | InterruptedException e) {
+                    emojiPresenter.parseEmojiSentence(editText.getText().toString());
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         });
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.action_share:
-                Intent sharing = new Intent(Intent.ACTION_SEND);
-                sharing.setType("text/plain");
-                sharing.putExtra(Intent.EXTRA_TEXT,textView.getText().toString());
-                startActivity(Intent.createChooser(sharing, getString(R.string.share_text)));
-                break;
-            case R.id.action_about:
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void displayEmoji(String string){
-        textView.setText(string);
+    public void displayEmoji(final String string){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.to_emoji))
+                .setMessage(string)
+                .setPositiveButton(getString(android.R.string.ok), null)
+                .setNegativeButton(getString(R.string.share), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        emojiPresenter.share(string);
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -92,4 +71,11 @@ public class EmojiActivity extends AppCompatActivity implements EmojiView {
         finish();
     }
 
+    @Override
+    public void shareEmoji(String string) {
+        Intent sharing = new Intent(Intent.ACTION_SEND);
+        sharing.setType("text/plain");
+        sharing.putExtra(Intent.EXTRA_TEXT,string);
+        startActivity(Intent.createChooser(sharing, getString(R.string.share_text)));
+    }
 }

@@ -22,6 +22,7 @@ public class EmojiPresenter {
 
     private EmojiView emojiView;
     private List<EmojiModel> emojiModelList;
+    private TranslateTask translateTask;
 
     public EmojiPresenter(EmojiView emojiView){
         this.emojiView = emojiView;
@@ -47,7 +48,8 @@ public class EmojiPresenter {
     }
 
     public void parseEmojiSentence(String string) throws ExecutionException, InterruptedException {
-        emojiView.displayEmoji((new TranslateTask()).execute(new AsyncContainer(string,(ArrayList) emojiModelList)).get());
+        translateTask = new TranslateTask();
+        emojiView.displayEmoji(translateTask.execute(new AsyncContainer(string,(ArrayList) emojiModelList)).get());
     }
 
 
@@ -74,5 +76,9 @@ public class EmojiPresenter {
 
     public ArrayList<EmojiModel> getEmojiList(){
         return (ArrayList<EmojiModel>) emojiModelList;
+    }
+
+    public void share(String string) {
+        emojiView.shareEmoji(string);
     }
 }

@@ -7,6 +7,8 @@ import com.anonymous.emojiproject.Models.AsyncContainer;
 import com.anonymous.emojiproject.Models.EmojiModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class TranslateTask extends AsyncTask<AsyncContainer, Void, String> {
 
@@ -23,6 +25,9 @@ public class TranslateTask extends AsyncTask<AsyncContainer, Void, String> {
     }
 
     private String parseEmoji(String string){
+        List<String> list = new ArrayList<>(Arrays.asList("us","to","so","no","in","be","it","is"));
+        if (list.contains(string))
+            return string;
 
         String character = string;
         String plural = string.length()==1 ? string : string.concat("s");
